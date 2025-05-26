@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Homepage{% endblock %}
+
+{% block main %}
+<div class="row">
+    <div class="col-lg-8 col-lg-offset-2">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Available Polls</h3>
+            </div>
+                
+            <ul class="list-group">
+                {% for poll in polls %}
+                <li class="list-group-item">
+                    {% if request.user.username == poll.created_by %}
+                    <strong>{{ poll.question }}</strong>
+                    {% else %}
+                        {{ poll.question }}
+                    {% endif %}
+                    <span class="pull-right" style="display: flex; gap: 5px; align-items: center;">
+                        <a href="{% url 'vote' poll.id %}" class="btn btn-info btn-xs">Vote</a>
+
+                        <a href="{% url 'results' poll.id %}" class="btn btn-default btn-xs">View</a>
+
+                        <form class="delete_poll" action="{% url 'delete' poll.id %}" method="post" style="margin: 0;">
+                            {% csrf_token %}
+                            {% if request.user.username == poll.created_by or request.user.is_superuser %}
+                                <button type="submit" class="btn btn-danger btn-xs" 
+                                        onclick="return confirm('Are you sure you want to delete this poll?');">
+                                    Delete
+                                </button>
+                            {% else %}
+                                <button class="btn btn-delete btn-xs" disabled title="You can't delete others' polls">
+                                    Delete
+                                </button>
+                            {% endif %}
+                        </form>
+                    </span>
+                </li>
+                {% endfor %}
+            </ul>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

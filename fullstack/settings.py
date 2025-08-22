@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,10 +44,12 @@ INSTALLED_APPS = [
     'api',
     'app',
     'widget_tweaks',
+    "corsheaders",
     
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -78,14 +83,27 @@ WSGI_APPLICATION = 'fullstack.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',  # MySQL engine
+#         'NAME': 'fullstack',                   # Replace with your MySQL database name
+#         'USER': 'root',                        # Replace with your MySQL username
+#         'PASSWORD': '110502',                  # Replace with your MySQL password
+#         'HOST': '127.0.0.1',                   # Use 'localhost' or '127.0.0.1' for local connection
+#         'PORT': '3306',                        # Default MySQL port
+#     }
+# }
+
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',  # MySQL engine
-        'NAME': 'fullstack',                   # Replace with your MySQL database name
-        'USER': 'root',                        # Replace with your MySQL username
-        'PASSWORD': '110502',                  # Replace with your MySQL password
-        'HOST': '127.0.0.1',                   # Use 'localhost' or '127.0.0.1' for local connection
-        'PORT': '3306',                        # Default MySQL port
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": os.getenv("MYSQL_NAME", "railway"),
+        "USER": os.getenv("MYSQL_USER", "root"),
+        "PASSWORD": os.getenv("MYSQL_PASSWORD", ""),
+        "HOST": os.getenv("MYSQL_HOST", "127.0.0.1"),
+        "PORT": os.getenv("MYSQL_PORT", "3306"),
+        "OPTIONS": {"charset": "utf8mb4"},
     }
 }
 

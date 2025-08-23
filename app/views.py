@@ -4,12 +4,9 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from .forms import PollForm
-import os
 
-API_BASE = os.getenv('API_BASE', 'http://127.0.0.1:8000')
-
-API_POLLS = f"{API_BASE}/api/v1/polls/"
-API_AUTH_SIGNIN = f"{API_BASE}/api/v1/auth/signin/" # Your JWT signin API URL
+API_BASE = 'http://127.0.0.1:8000/api/v1/polls/'
+API_AUTH_SIGNIN = 'http://127.0.0.1:8000/api/v1/auth/signin/'  # Your JWT signin API URL
 
 
 def get_auth_headers(request):
